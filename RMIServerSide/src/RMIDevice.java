@@ -14,7 +14,7 @@ public class RMIDevice extends UnicastRemoteObject implements DeviceInterface{
 	}
 
 
-	public String addDevice(String name,double temp, int timestamp) throws RemoteException {
+	public String addDevice(String name,double temp, long timestamp) throws RemoteException {
 		Device device = new Device(name,temp,timestamp);
 		return dDao.addDevice(device);
 	}

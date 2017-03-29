@@ -9,13 +9,13 @@ public class Device {
 	private ObjectId id;
 	private String name;
 	private double temperature;
-	private int timestamp;
+	private long timestamp;
 	
 	public Device(){
 		super();
 	}
 	
-	public Device(String name, double temperature, int timestamp){
+	public Device(String name, double temperature, long timestamp){
 		super();
 		this.name = name;
 		this.temperature = temperature;
@@ -39,10 +39,10 @@ public class Device {
 	public void setTemperature(double temperature) {
 		this.temperature = temperature;
 	}
-	public int getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(int timestamp) {
+	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
 
