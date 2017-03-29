@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>In grade A we trust</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript"> 
+            function createChart(value) {
+				
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+				
+				
+                
+            }
+			
+			function drawChart(value) {
+				if(value==null){
+					value = 'Machine-1';
+				}
+				document.getElementById("pageTitle").innerHTML = "Flow Chart: "+value;
+                var tempServer = document.getElementsByClassName('temp'+value);
+                var timeServer = document.getElementsByClassName('time'+value);
+				console.log();
+                var chartData = [];
+                for (var i = 0; i <= tempServer.length; i++) chartData.push([]);
+                chartData[0] = ['Time', value];
+                for (var i = 0; i < tempServer.length; i++){
+					
+					var date = new Date();
+					date.setMilliseconds(timeServer[i].innerHTML);
+					console.log(date);
+					// Hours part from the timestamp
+					var hours = date.getHours();
+					// Minutes part from the timestamp
+					var minutes = "0" + date.getMinutes();
+					// Seconds part from the timestamp
+					var seconds = "0" + date.getSeconds();
+
+					// Will display time in 10:30:23 format
+					var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+				
+                    chartData[i + 1] = [formattedTime, parseFloat(tempServer[i].innerHTML)];
+                }
+
+                var data = google.visualization.arrayToDataTable(chartData);
+
+                var options = {
+                    title: 'Temperature Tracking',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+                chart.draw(data, options);
+                }
+        </script>
+
+    <style>
+        .tempServer, .timeServer {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Admin</a>
+            </div>
+            <!-- Top Menu Items -->
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="chart"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+		
+		{{#json}}
+            {{#entry}}
+				<b hidden="true" class="temp{{name}}">{{temperature}}</b>
+				<b hidden="true" class="time{{name}}">{{timestamp}}</b>
+			{{/entry}}
+        {{/json}}
+
+        <script> createChart() </script>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Flot Charts -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="page-header" id="pageTitle">Flow Chart: Machine-1</h2> 
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle btn btn-primary" data-toggle="dropdown"><i class="fa fa-bell"></i>Machine List<b class="caret"></b></a>
+                            <ul class="dropdown-menu alert-dropdown">
+								{{#json}}
+                                <li> <a href="javascript:drawChart('{{name}}');" >{{name}}</a> </li>
+								{{/json}}
+                            </ul>
+                        </div>
+                        <div id="curve_chart" style="width: 900px; height: 500px"></div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                
+                <!-- /.row -->
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
